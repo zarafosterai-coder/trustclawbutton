@@ -1,0 +1,16 @@
+export const env = {
+  NODE_ENV: (process.env.NODE_ENV ?? "development") as "development" | "test" | "production",
+  BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET ?? "",
+  COMPOSIO_API_KEY: process.env.COMPOSIO_API_KEY ?? "",
+  OPENCODE_BASE_URL: process.env.OPENCODE_BASE_URL ?? "https://opencode.ai/zen",
+  OPENCODE_API_KEY: process.env.OPENCODE_API_KEY ?? "",
+  OPENCODE_MODEL: process.env.OPENCODE_MODEL ?? "minimax-m2.5-free",
+  ENABLE_TOOL_SEARCH: process.env.ENABLE_TOOL_SEARCH ?? "true",
+  TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
+  TELEGRAM_BOT_USERNAME: process.env.TELEGRAM_BOT_USERNAME,
+  TELEGRAM_WEBHOOK_SECRET: process.env.TELEGRAM_WEBHOOK_SECRET,
+  DATABASE_URL: process.env.DATABASE_URL ?? "",
+  REDIS_URL: process.env.REDIS_URL,
+  CRON_SECRET: process.env.CRON_SECRET ?? "",
+  APP_URL: process.env.APP_URL ?? process.env.NEXT_PUBLIC_APP_URL ?? `http://localhost:${process.env.PORT ?? "8080"}`,
+};
