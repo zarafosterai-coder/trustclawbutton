@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Loader2, Trash2 } from "lucide-react";
-import { useRouter, useLocation } from "wouter";
+import { useLocation } from "wouter";
 import { trpc } from "~/clients/trpc";
 import { Button } from "~/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "~/components/ui/dialog";
@@ -19,12 +19,12 @@ const CONFIRM_TEXT = "delete my instance";
 export function DangerZone() {
   const [open, setOpen] = useState(false);
   const [confirmText, setConfirmText] = useState("");
-  const router = useRouter();
+  const [, navigate] = useLocation();
 
   const deleteInstance = trpc.trustclaw.deleteInstance.useMutation({
     onSuccess: () => {
       showSuccessToast("TrustClaw instance deleted");
-      router.push("/dashboard");
+      navigate("/dashboard");
     },
     onError: trpcToastOnError,
   });

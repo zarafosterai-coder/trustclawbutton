@@ -39,7 +39,7 @@ export function TrustClawBrand({ size = "md", logoLink }: TrustClawBrandProps) {
           className="group absolute bottom-0 right-0 flex translate-y-[80%] items-center gap-0.5"
         >
           <span className={`${s.by} text-muted-foreground`}>by</span>
-          <Image
+          <img
             src="/images/logo/ComposioTransparent.png"
             alt=""
             width={s.composioLogo}

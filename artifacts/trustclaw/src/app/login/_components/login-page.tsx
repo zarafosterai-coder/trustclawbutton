@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useLocation } from "wouter";
+import { useLocation } from "wouter";
 import { TrustClawBrand } from "~/app/_components/trustclaw-brand";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -15,7 +15,7 @@ interface LoginPageProps {
 }
 
 export function LoginPage({ firstTime = false }: LoginPageProps) {
-  const router = useRouter();
+  const [, navigate] = useLocation();
   const [pending, setPending] = useState(false);
 
   // Login form state
@@ -40,7 +40,7 @@ export function LoginPage({ firstTime = false }: LoginPageProps) {
         showErrorToast(result.error.message ?? "Failed to sign in");
         return;
       }
-      router.push("/dashboard");
+      navigate("/dashboard");
     } finally {
       setPending(false);
     }
@@ -60,7 +60,7 @@ export function LoginPage({ firstTime = false }: LoginPageProps) {
         showErrorToast(result.error.message ?? "Failed to create account");
         return;
       }
-      router.push("/dashboard");
+      navigate("/dashboard");
     } finally {
       setPending(false);
     }

@@ -70,7 +70,7 @@ function TweetCard({ tweet, index }: { tweet: Tweet; index: number }) {
     >
       {/* Header row */}
       <div className="flex items-center gap-2.5">
-        <Image
+        <img
           src={tweet.avatar}
           alt={tweet.displayName}
           width={40}

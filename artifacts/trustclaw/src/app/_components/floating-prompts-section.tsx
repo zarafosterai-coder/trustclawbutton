@@ -99,7 +99,7 @@ export function FloatingPromptsSection() {
                   animation: `fade-in 1s ease-out ${i * 0.05}s both`,
                 }}
               >
-                <Image
+                <img
                   src={`/images/logos/${slug}.svg`}
                   alt=""
                   aria-hidden
@@ -127,7 +127,7 @@ export function FloatingPromptsSection() {
                 <div className="flex items-start gap-3">
                   <div className="flex shrink-0 items-center gap-1.5 pt-0.5">
                     {prompt.icons.map((slug) => (
-                      <Image
+                      <img
                         key={slug}
                         src={`/images/logos/${slug}.svg`}
                         alt=""
@@ -153,7 +153,7 @@ export function FloatingPromptsSection() {
           <div className="mb-4 flex items-center justify-center gap-3 overflow-x-auto">
             {APP_ICONS.slice(0, 8).map((slug) => (
               <div key={slug} className="shrink-0 opacity-30">
-                <Image
+                <img
                   src={`/images/logos/${slug}.svg`}
                   alt=""
                   aria-hidden
@@ -176,7 +176,7 @@ export function FloatingPromptsSection() {
               <div className="flex items-start gap-3">
                 <div className="flex shrink-0 items-center gap-1.5 pt-0.5">
                   {prompt.icons.map((slug) => (
-                    <Image
+                    <img
                       key={slug}
                       src={`/images/logos/${slug}.svg`}
                       alt=""

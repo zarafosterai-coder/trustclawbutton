@@ -53,13 +53,12 @@ const SCATTER_TIMING = [
 export function HeroSection() {
   return (
     <section className="relative px-4 py-20 md:px-6 md:py-32 lg:py-40">
-      <Image
+      <img
         src="/images/elements/rays_left.svg"
         alt=""
         aria-hidden
         width={1920}
         height={1080}
-        priority
         className="pointer-events-none absolute left-1/2 top-1/2 hidden h-auto w-[140%] max-w-none -translate-x-1/2 -translate-y-1/2 -scale-x-100 lg:block"
       />
       <div className="pointer-events-none absolute right-0 top-1/2 hidden h-[600px] w-[600px] -translate-y-1/2 translate-x-1/4 lg:block">
@@ -78,7 +77,7 @@ export function HeroSection() {
               animation: `scatter-in 2s ease-out ${timing.delay + 0.5}s both, float-y ${timing.duration}s ease-in-out ${timing.delay + 0.5}s infinite`,
             }}
           >
-            <Image
+            <img
               src={`/images/logos/${pos.slug}.svg`}
               alt=""
               aria-hidden
@@ -117,7 +116,7 @@ export function HeroSection() {
                   key={slug}
                   className="relative h-10 w-10 rounded-full border-2 border-background bg-card p-1.5 shadow-sm"
                 >
-                  <Image
+                  <img
                     src={`/images/logos/${slug}.svg`}
                     alt=""
                     aria-hidden

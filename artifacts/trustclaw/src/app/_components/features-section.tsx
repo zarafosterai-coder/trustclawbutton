@@ -136,7 +136,7 @@ function IntegrationsFeatureCard({ index }: { index: number }) {
                 className="border-border bg-background flex items-center justify-center rounded-lg border p-1.5"
                 title={tool.name}
               >
-                <Image
+                <img
                   src={`/images/logos/${tool.slug}.svg`}
                   alt={tool.name}
                   width={20}
@@ -178,7 +178,7 @@ function MessagingFeatureCard({ index }: { index: number }) {
                 key={platform.name}
                 className={`border-border bg-background flex items-center gap-2 rounded-lg border px-3 py-2${platform.disabled ? " opacity-40" : ""}`}
               >
-                <Image
+                <img
                   src={`/images/logos/${platform.slug}.svg`}
                   alt=""
                   aria-hidden
@@ -204,13 +204,12 @@ function MessagingFeatureCard({ index }: { index: number }) {
 export function FeaturesSection() {
   return (
     <section className="relative overflow-hidden px-4 py-16 md:px-6 md:py-24 lg:py-32">
-      <Image
+      <img
         src="/images/elements/quarter_circle.svg"
         alt=""
         aria-hidden
         width={800}
         height={800}
-        priority={false}
         className="pointer-events-none absolute top-0 -right-40 hidden h-[500px] w-[500px] opacity-[0.07] md:h-[700px] md:w-[700px] dark:block"
       />
 

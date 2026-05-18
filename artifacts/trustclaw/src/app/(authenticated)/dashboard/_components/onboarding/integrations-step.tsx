@@ -119,7 +119,7 @@ export function IntegrationsStep({
               className="border-border flex min-h-[44px] items-center justify-between rounded-lg border p-4"
             >
               {integration.logo && (
-                <Image
+                <img
                   width={32}
                   height={32}
                   src={integration.logo}

@@ -2,7 +2,7 @@
 
 import { Button } from "~/components/ui/button";
 import { AlertCircle } from "lucide-react";
-import { useRouter, useLocation } from "wouter";
+import { useLocation } from "wouter";
 
 interface ErrorDisplayProps {
   message: string;
@@ -15,7 +15,7 @@ export function ErrorDisplay({
   retryText,
   onRetry,
 }: ErrorDisplayProps) {
-  const router = useRouter();
+  const [, navigate] = useLocation();
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-4 p-8 text-center">
       <AlertCircle className="text-destructive h-12 w-12" />
@@ -29,14 +29,14 @@ export function ErrorDisplay({
         </Button>
       )}
       {typeof onRetry === "string" && onRetry !== "refresh" && (
-        <Button variant="outline" onClick={() => router.push(onRetry)}>
+        <Button variant="outline" onClick={() => navigate(onRetry as string)}>
           {retryText}
         </Button>
       )}
       {onRetry === "refresh" && (
         <Button
           variant="outline"
-          onClick={() => router.refresh()}
+          onClick={() => window.location.reload()}
         >
           {retryText}
         </Button>

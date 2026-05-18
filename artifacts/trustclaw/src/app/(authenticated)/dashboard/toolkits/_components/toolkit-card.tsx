@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useLocation } from "wouter";
+import { useLocation } from "wouter";
 import { Button } from "~/components/ui/button";
 import { trpc } from "~/clients/trpc";
 import {
@@ -17,7 +17,7 @@ interface ToolkitCardProps {
 
 export function ToolkitCard({ toolkit }: ToolkitCardProps) {
   const [logoLoaded, setLogoLoaded] = useState(false);
-  const router = useRouter();
+  const [, navigate] = useLocation();
 
   const utils = trpc.useUtils();
   const getAuthLink = trpc.toolkits.getAuthLink.useMutation({
@@ -39,7 +39,7 @@ export function ToolkitCard({ toolkit }: ToolkitCardProps) {
       const { redirectUrl } = await getAuthLink.mutateAsync({
         toolkit: toolkit.slug,
       });
-      router.push(redirectUrl);
+      navigate(redirectUrl);
     } catch {
       // trpcToastOnError already handles the toast
     }

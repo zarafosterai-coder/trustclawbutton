@@ -1,7 +1,6 @@
 "use client";
 
-;
-import { useLocation, useRouter } from "wouter";
+import { useLocation, Link } from "wouter";
 import {
   LogOut,
   MessageCircle,
@@ -10,7 +9,6 @@ import {
   Settings,
 } from "lucide-react";
 import { Button } from "~/components/ui/button";
-import { Link } from "wouter";
 import {
   Tooltip,
   TooltipContent,
@@ -22,20 +20,20 @@ import { authClient } from "~/clients/auth/react";
 import { useTerminalStore } from "./terminal-store";
 
 export function DashboardNavbar() {
-  const pathname = usePathname();
+  const [pathname, navigate] = useLocation();
   const isChat = pathname === "/dashboard";
   const isSettings = pathname.startsWith("/dashboard/settings");
   const isToolkits = pathname.startsWith("/dashboard/toolkits");
   const terminalOpen = useTerminalStore((s) => s.terminalOpen);
   const setTerminalOpen = useTerminalStore((s) => s.setTerminalOpen);
-  const router = useRouter();
+
   const handleToggleTerminal = () => {
     setTerminalOpen(!terminalOpen);
   };
 
   const handleLogout = async () => {
     await authClient.signOut();
-    router.push("/login");
+    navigate("/login");
   };
 
   return (
@@ -117,7 +115,7 @@ export function DashboardNavbar() {
                 size="icon"
                 className="h-9 w-9"
               >
-                <Image
+                <img
                   src="/images/icons/discord.webp"
                   alt="Discord"
                   width={16}

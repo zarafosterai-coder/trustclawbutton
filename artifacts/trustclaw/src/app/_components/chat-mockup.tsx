@@ -69,7 +69,7 @@ function SearchResult({ delay }: { delay: number }) {
               RECOMMENDED TOOL
             </div>
             <div className="flex items-center gap-3">
-              <Image
+              <img
                 src="/images/logos/gmail.svg"
                 alt="Gmail"
                 width={12}
@@ -116,7 +116,7 @@ function ExecResult({ delay }: { delay: number }) {
             <span className="shrink-0 text-[10px] text-muted-foreground/60">
               └
             </span>
-            <Image
+            <img
               src={`/images/logos/${tool.icon}.svg`}
               alt={tool.icon}
               width={14}
