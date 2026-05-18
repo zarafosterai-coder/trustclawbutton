@@ -1,5 +1,6 @@
 import { ToolLoopAgent, stepCountIs } from "ai";
 import type { ToolSet, SystemModelMessage } from "ai";
+import { getAIModel } from "~/server/clients/ai-provider";
 import { db } from "~/server/clients/db";
 import { createComposioClient } from "~/server/clients/composio";
 import { buildSystemPrompt } from "./system-prompt";
@@ -116,18 +117,6 @@ export async function prepareAgentRun(
   const contextWindow = getContextWindow(instance.anthropicModel);
   const { messages: prunedMessages } = pruneContext(aiMessages, contextWindow);
 
-  // Add cache breakpoint to last history message (before new user message)
-  // so the conversation prefix is cached across turns
-  if (prunedMessages.length >= 2) {
-    const lastHistoryIndex = prunedMessages.length - 2;
-    const msg = prunedMessages[lastHistoryIndex]!;
-    prunedMessages[lastHistoryIndex] = {
-      ...msg,
-      providerOptions: {
-        anthropic: { cacheControl: { type: "ephemeral" } },
-      },
-    };
-  }
 
   await db.message.create({
     data: {
@@ -168,19 +157,11 @@ export async function prepareAgentRun(
     },
   });
 
-  const modelString = instance.anthropicModel.startsWith("anthropic/")
-    ? instance.anthropicModel
-    : `anthropic/${instance.anthropicModel}`;
-  const model = modelString;
-
   const agent = new ToolLoopAgent({
-    model,
+    model: getAIModel(),
     instructions: {
       role: "system",
       content: systemPrompt,
-      providerOptions: {
-        anthropic: { cacheControl: { type: "ephemeral" } },
-      },
     } satisfies SystemModelMessage,
     tools: allTools,
     stopWhen: stepCountIs(100),

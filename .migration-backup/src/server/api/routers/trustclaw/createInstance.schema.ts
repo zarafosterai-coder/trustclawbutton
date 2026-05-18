@@ -1,17 +1,13 @@
 import { z } from "zod";
 
-export const ALLOWED_ANTHROPIC_MODELS = [
-  "claude-sonnet-4-5-20250929",
-  "claude-opus-4-6",
-  "claude-haiku-4-5-20251001",
-] as const;
+export const OPENCODE_MODEL_ID = "minimax-m2.5-free";
 
-export const allowedAnthropicModelSchema = z.enum(ALLOWED_ANTHROPIC_MODELS);
+export const ALLOWED_ANTHROPIC_MODELS = [OPENCODE_MODEL_ID] as const;
+
+export const allowedAnthropicModelSchema = z.enum(ALLOWED_ANTHROPIC_MODELS).default(OPENCODE_MODEL_ID);
 
 export const createInstanceInput = z.object({
-  anthropicModel: allowedAnthropicModelSchema.default(
-    "claude-sonnet-4-5-20250929",
-  ),
+  anthropicModel: allowedAnthropicModelSchema,
 });
 
 export type CreateInstanceInput = z.infer<typeof createInstanceInput>;

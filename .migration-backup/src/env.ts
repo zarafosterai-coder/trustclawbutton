@@ -13,6 +13,12 @@ export const env = createEnv({
     // Composio API (global key)
     COMPOSIO_API_KEY: z.string(),
 
+    // OpenCode Zen AI provider
+    OPENCODE_BASE_URL: z.string().url().default("https://opencode.ai/zen"),
+    OPENCODE_API_KEY: z.string(),
+    OPENCODE_MODEL: z.string().default("minimax-m2.5-free"),
+    ENABLE_TOOL_SEARCH: z.string().default("true"),
+
     // Telegram bot (optional - Telegram features disabled when missing)
     TELEGRAM_BOT_TOKEN: z.string().optional(),
     TELEGRAM_BOT_USERNAME: z.string().optional(),
@@ -37,6 +43,10 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
     COMPOSIO_API_KEY: process.env.COMPOSIO_API_KEY,
+    OPENCODE_BASE_URL: process.env.OPENCODE_BASE_URL,
+    OPENCODE_API_KEY: process.env.OPENCODE_API_KEY,
+    OPENCODE_MODEL: process.env.OPENCODE_MODEL,
+    ENABLE_TOOL_SEARCH: process.env.ENABLE_TOOL_SEARCH,
     TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
     TELEGRAM_BOT_USERNAME: process.env.TELEGRAM_BOT_USERNAME,
     TELEGRAM_WEBHOOK_SECRET: process.env.TELEGRAM_WEBHOOK_SECRET,

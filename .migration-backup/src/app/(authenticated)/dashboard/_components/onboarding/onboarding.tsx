@@ -3,12 +3,10 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
-import type { z } from "zod";
 import { trpc } from "~/clients/trpc";
 import { showTrpcErrorToast } from "~/components/core/toast-notifications";
 import { ErrorBoundary } from "~/components/core/error-boundary";
 import { Button } from "~/components/ui/button";
-import { allowedAnthropicModelSchema } from "~/server/api/routers/trustclaw/createInstance.schema";
 import {
   STEP_ORDER,
   WRITING_STYLES,
@@ -25,7 +23,6 @@ import { WritingStyleStep } from "./writing-style-step";
 import { PersonalityStep } from "./personality-step";
 import { EmojiStep } from "./emoji-step";
 import { LoreStep } from "./lore-step";
-import { ModelStep } from "./model-step";
 import { IntegrationsStep } from "./integrations-step";
 import { TelegramStep } from "./telegram-step";
 import { ProgressDots } from "./progress-dots";
@@ -44,7 +41,6 @@ interface OnboardingWizardState {
   personality: PersonalityKey | null;
   emoji: string | null;
   lore: string;
-  anthropicModel: z.infer<typeof allowedAnthropicModelSchema>;
 }
 
 function getAnimationState(step: Step): AnimationState {
@@ -59,8 +55,6 @@ function getAnimationState(step: Step): AnimationState {
       return "celebrating";
     case "lore":
       return "listening";
-    case "model":
-      return "thinking";
     case "integrations":
       return "celebrating";
     case "telegram":
@@ -75,7 +69,6 @@ interface SavedOnboardingState {
   personality: string | null;
   emoji: string | null;
   lore: string;
-  anthropicModel: string;
 }
 
 interface OnboardingProps {
@@ -100,9 +93,6 @@ export function Onboarding({
 
   const [step, setStep] = useState<Step>(initialStep);
   const [wizardState, setWizardState] = useState<OnboardingWizardState>(() => {
-    const parsedModel = allowedAnthropicModelSchema.safeParse(
-      savedState?.anthropicModel,
-    );
     return {
       name: savedState?.name ?? "",
       writingStyle:
@@ -113,19 +103,10 @@ export function Onboarding({
         null,
       emoji: savedState?.emoji ?? null,
       lore: savedState?.lore ?? "",
-      anthropicModel: parsedModel.success
-        ? parsedModel.data
-        : "claude-sonnet-4-5-20250929",
     };
   });
 
-  const savedStepIndex =
-    savedState?.currentStep && isValidStep(savedState.currentStep)
-      ? STEP_ORDER.indexOf(savedState.currentStep)
-      : -1;
-  const [instanceCreated, setInstanceCreated] = useState(
-    hasExistingInstance || savedStepIndex > STEP_ORDER.indexOf("model"),
-  );
+  const [instanceCreated, setInstanceCreated] = useState(hasExistingInstance);
 
   const utils = trpc.useUtils();
 
@@ -151,7 +132,6 @@ export function Onboarding({
       personality: currentWizardState.personality,
       emoji: currentWizardState.emoji,
       lore: currentWizardState.lore,
-      anthropicModel: currentWizardState.anthropicModel,
     });
   };
 
@@ -169,14 +149,14 @@ export function Onboarding({
     }
   };
 
-  const handleModelNext = async () => {
+  const handleLoreNext = async () => {
     if (instanceCreated) {
       goToStep("integrations");
       return;
     }
     try {
       await createInstance.mutateAsync({
-        anthropicModel: wizardState.anthropicModel,
+        anthropicModel: "minimax-m2.5-free",
       });
       setInstanceCreated(true);
       goToStep("integrations");
@@ -222,7 +202,7 @@ export function Onboarding({
                 <Button
                   variant="outline"
                   className="min-h-[44px]"
-                  onClick={() => void handleModelNext()}
+                  onClick={() => void handleLoreNext()}
                 >
                   Retry
                 </Button>
@@ -300,21 +280,9 @@ export function Onboarding({
               key="lore"
               value={wizardState.lore}
               onChange={(lore) => setWizardState((prev) => ({ ...prev, lore }))}
-              onNext={() => goToStep("model")}
+              onNext={() => void handleLoreNext()}
               onBack={goBack}
-              onSkip={() => goToStep("model")}
-            />
-          )}
-
-          {step === "model" && (
-            <ModelStep
-              key="model"
-              value={wizardState.anthropicModel}
-              onChange={(anthropicModel) =>
-                setWizardState((prev) => ({ ...prev, anthropicModel }))
-              }
-              onNext={() => void handleModelNext()}
-              onBack={goBack}
+              onSkip={() => void handleLoreNext()}
             />
           )}
 

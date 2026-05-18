@@ -18,3 +18,10 @@ expertMode = true
 [postMerge]
 path = "scripts/post-merge.sh"
 timeoutMs = 20000
+
+[userenv]
+
+[userenv.shared]
+OPENCODE_BASE_URL = "https://opencode.ai/zen"
+OPENCODE_MODEL = "minimax-m2.5-free"
+ENABLE_TOOL_SEARCH = "true"

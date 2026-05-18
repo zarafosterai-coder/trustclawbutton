@@ -4,7 +4,6 @@ export const STEP_ORDER = [
   "personality",
   "emoji",
   "lore",
-  "model",
   "integrations",
   "telegram",
 ] as const;
@@ -34,27 +33,6 @@ export const CURATED_EMOJIS = [
   "\u{1F98A}", "\u{1F419}", "\u{1F98B}", "\u{1F433}", "\u{1F989}", "\u{1F438}",
   "\u{1F680}", "\u{1F3AE}", "\u{1F3B8}", "\u{1F3A8}", "\u{1F52E}", "\u{1F9E0}",
   "\u2728", "\u{1F4AB}", "\u{1F338}", "\u{1F340}", "\u2600\uFE0F", "\u{1F308}",
-] as const;
-
-export const MODELS = [
-  {
-    value: "claude-opus-4-6" as const,
-    label: "Claude Opus 4.6",
-    description: "Most capable",
-    cost: "$$$",
-  },
-  {
-    value: "claude-sonnet-4-5-20250929" as const,
-    label: "Claude Sonnet 4.5",
-    description: "Balanced",
-    cost: "$$",
-  },
-  {
-    value: "claude-haiku-4-5-20251001" as const,
-    label: "Claude Haiku 4.5",
-    description: "Fast & affordable",
-    cost: "$",
-  },
 ] as const;
 
 export const INTEGRATION_DESCRIPTIONS: Record<string, string> = {

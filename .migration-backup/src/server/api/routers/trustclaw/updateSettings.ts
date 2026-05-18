@@ -22,9 +22,7 @@ export const updateSettings = protectedProcedure
     const [updated] = await db.$transaction([
       db.composioClawInstance.update({
         where: { userId },
-        data: {
-          ...(input.anthropicModel && { anthropicModel: input.anthropicModel }),
-        },
+        data: {},
         select: {
           id: true,
           anthropicModel: true,
