@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { TrustClawBrand } from "~/app/_components/trustclaw-brand";
 import { Button } from "~/components/ui/button";
@@ -9,14 +9,22 @@ import { Label } from "~/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { authClient } from "~/clients/auth/react";
 import { showErrorToast } from "~/components/core/toast-notifications";
+import { api } from "~/clients/trpc/react";
 
-interface LoginPageProps {
-  firstTime?: boolean;
-}
-
-export function LoginPage({ firstTime = false }: LoginPageProps) {
+export function LoginPage() {
   const [, navigate] = useLocation();
   const [pending, setPending] = useState(false);
+
+  const { data: session, isPending: sessionLoading } = authClient.useSession();
+  const { data: firstTimeData } = api.health.firstTime.useQuery();
+
+  const firstTime = firstTimeData?.isFirstTime ?? false;
+
+  useEffect(() => {
+    if (!sessionLoading && session) {
+      navigate("/dashboard");
+    }
+  }, [session, sessionLoading, navigate]);
 
   // Login form state
   const [loginUsername, setLoginUsername] = useState("");
@@ -65,6 +73,14 @@ export function LoginPage({ firstTime = false }: LoginPageProps) {
       setPending(false);
     }
   };
+
+  if (sessionLoading) {
+    return (
+      <div className="bg-background flex min-h-screen items-center justify-center">
+        <div className="text-muted-foreground text-sm">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-background flex min-h-screen flex-col items-center justify-center">
