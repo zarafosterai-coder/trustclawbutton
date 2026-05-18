@@ -1,35 +1,32 @@
-import { auth } from "~/server/auth";
-;
-;
-import { ErrorDisplay } from "~/components/core/error-display";
+"use client";
 
-export default async function AuthenticatedLayout({
+import { useEffect, useState } from "react";
+import { useLocation } from "wouter";
+import { authClient } from "~/clients/auth/react";
+
+export default function AuthenticatedLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const reqHeaders = await headers();
+  const [, navigate] = useLocation();
+  const [checking, setChecking] = useState(true);
 
-  // Only the session lookup can fail with a recoverable error (DB
-  // unreachable, auth service down). `redirect()` throws a Next.js
-  // control-flow exception that must propagate to the framework — wrapping
-  // it in a try/catch turns "no session" into an error screen instead of a
-  // redirect, so keep the redirect call outside the catch.
-  let session: Awaited<ReturnType<typeof auth.api.getSession>>;
-  try {
-    session = await auth.api.getSession({ headers: reqHeaders });
-  } catch {
+  useEffect(() => {
+    authClient.getSession().then((result) => {
+      if (!result.data?.session) {
+        navigate("/login");
+      }
+      setChecking(false);
+    });
+  }, [navigate]);
+
+  if (checking) {
     return (
-      <ErrorDisplay
-        message="We're having trouble reaching our servers. Please check your connection and try again."
-        onRetry="refresh"
-        retryText="Refresh Page"
-      />
+      <div className="flex h-screen w-full items-center justify-center">
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-foreground border-t-transparent" />
+      </div>
     );
-  }
-
-  if (!session) {
-    redirect("/login");
   }
 
   return <>{children}</>;

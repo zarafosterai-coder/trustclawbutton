@@ -1,41 +1,83 @@
 import { Switch, Route, Router as WouterRouter } from "wouter";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/not-found";
+import { TooltipProvider } from "~/components/ui/tooltip";
+import { ThemeProvider } from "~/components/core/theme-provider";
+import { Toaster } from "~/components/ui/sonner";
+import { TRPCReactProvider } from "~/clients/trpc/react";
+import { DashboardNavbar } from "~/app/(authenticated)/dashboard/_components/dashboard-navbar";
 
-const queryClient = new QueryClient();
+import LandingPageComponent from "~/app/page";
+import LoginPageComponent from "~/app/login/page";
+import AuthenticatedLayout from "~/app/(authenticated)/layout";
+import DashboardPageComponent from "~/app/(authenticated)/dashboard/page";
+import SettingsPageComponent from "~/app/(authenticated)/dashboard/settings/page";
+import ToolkitsPageComponent from "~/app/(authenticated)/dashboard/toolkits/page";
 
-function Home() {
+function DashboardShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
-      <div className="text-center">
-        <h1 className="text-2xl font-bold text-gray-900">Replit Agent is building...</h1>
-        <p className="mt-2 text-sm text-gray-600">Your app will appear here once it's ready.</p>
-      </div>
+    <div className="flex h-screen flex-col">
+      <DashboardNavbar />
+      <main className="flex-1 overflow-hidden">{children}</main>
     </div>
+  );
+}
+
+function AuthDashboard({ children }: { children: React.ReactNode }) {
+  return (
+    <AuthenticatedLayout>
+      <DashboardShell>{children}</DashboardShell>
+    </AuthenticatedLayout>
   );
 }
 
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Home} />
-      <Route component={NotFound} />
+      <Route path="/" component={LandingPageComponent} />
+      <Route path="/login" component={LoginPageComponent} />
+      <Route path="/dashboard">
+        {() => (
+          <AuthDashboard>
+            <DashboardPageComponent />
+          </AuthDashboard>
+        )}
+      </Route>
+      <Route path="/dashboard/settings">
+        {() => (
+          <AuthDashboard>
+            <SettingsPageComponent />
+          </AuthDashboard>
+        )}
+      </Route>
+      <Route path="/dashboard/toolkits">
+        {() => (
+          <AuthDashboard>
+            <ToolkitsPageComponent />
+          </AuthDashboard>
+        )}
+      </Route>
+      <Route>
+        <div className="flex h-screen items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold">404 — Page Not Found</h1>
+          </div>
+        </div>
+      </Route>
     </Switch>
   );
 }
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <Router />
-        </WouterRouter>
-        <Toaster />
-      </TooltipProvider>
-    </QueryClientProvider>
+    <TRPCReactProvider>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <TooltipProvider>
+          <WouterRouter base={import.meta.env.BASE_URL?.replace(/\/$/, "") ?? ""}>
+            <Router />
+          </WouterRouter>
+          <Toaster />
+        </TooltipProvider>
+      </ThemeProvider>
+    </TRPCReactProvider>
   );
 }
 

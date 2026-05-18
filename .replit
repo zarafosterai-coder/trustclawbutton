@@ -25,3 +25,15 @@ timeoutMs = 20000
 OPENCODE_BASE_URL = "https://opencode.ai/zen"
 OPENCODE_MODEL = "minimax-m2.5-free"
 ENABLE_TOOL_SEARCH = "true"
+
+[[ports]]
+localPort = 8080
+externalPort = 8080
+
+[[ports]]
+localPort = 8081
+externalPort = 8081
+
+[[ports]]
+localPort = 20460
+externalPort = 80

@@ -1,34 +1,35 @@
-import { trpcServer, HydrateClient } from "~/clients/trpc/server";
+"use client";
+
+import { trpc } from "~/clients/trpc";
 import { ErrorBoundary } from "~/components/core/error-boundary";
 import { TrustClawChat } from "./_components/chat/trustclaw-chat";
 import { OnboardingClient } from "./_components/onboarding/onboarding-client";
 
-export default async function Page() {
-  void trpcServer.api.trustclaw.getHistory.prefetchInfinite({ limit: 10 });
-  void trpcServer.api.trustclaw.getStreamingMessage.prefetch();
+export default function Page() {
+  const { data: status, isLoading } = trpc.trustclaw.getStatus.useQuery();
 
-  const status = await trpcServer.api.trustclaw.getStatus();
-
-  if (!status.hasInstance) {
-    void trpcServer.api.trustclaw.getInstance.prefetch();
-
+  if (isLoading) {
     return (
-      <HydrateClient>
-        <ErrorBoundary>
-          <OnboardingClient
-            hasExistingInstance={status.hasInstance}
-            hasOnboardingState={status.hasOnboardingState}
-          />
-        </ErrorBoundary>
-      </HydrateClient>
+      <div className="flex h-screen w-full items-center justify-center">
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-foreground border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (!status?.hasInstance) {
+    return (
+      <ErrorBoundary>
+        <OnboardingClient
+          hasExistingInstance={status?.hasInstance ?? false}
+          hasOnboardingState={status?.hasOnboardingState ?? false}
+        />
+      </ErrorBoundary>
     );
   }
 
   return (
-    <HydrateClient>
-      <ErrorBoundary>
-        <TrustClawChat />
-      </ErrorBoundary>
-    </HydrateClient>
+    <ErrorBoundary>
+      <TrustClawChat />
+    </ErrorBoundary>
   );
 }
