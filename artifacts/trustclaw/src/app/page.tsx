@@ -20,7 +20,7 @@ const jsonLd = {
   },
 };
 
-export default async function Page() {
+export default function Page() {
   return (
     <>
       <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>

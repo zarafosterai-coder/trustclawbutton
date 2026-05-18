@@ -1,11 +1,12 @@
 "use client";
 
+import { z } from "zod";
 import { motion } from "framer-motion";
 import { cn } from "~/lib/utils";
-import type { z } from "zod";
-import { allowedAnthropicModelSchema } from "~/server/api/routers/trustclaw/createInstance.schema";
 import { MODELS } from "./onboarding.consts";
 import { StepLayout, itemVariants } from "./step-layout";
+
+const allowedAnthropicModelSchema = z.string().default("minimax-m2.5-free");
 
 interface ModelStepProps {
   value: z.infer<typeof allowedAnthropicModelSchema>;
@@ -29,7 +30,7 @@ export function ModelStep({
   return (
     <StepLayout
       title="Choose my brain!"
-      subtitle="Which Claude model should power me?"
+      subtitle="Which model should power me?"
       onNext={onNext}
       onBack={onBack}
     >

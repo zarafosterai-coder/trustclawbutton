@@ -9,6 +9,7 @@ export function BottomCtaSection() {
     <section className="border-border relative overflow-hidden border-t px-4 py-16 md:px-6 md:py-24 lg:py-32">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,oklch(0.488_0.243_264.376/0.08),transparent_70%)]" />
       
+        <img
         src="/images/elements/cube.svg"
         alt=""
         aria-hidden

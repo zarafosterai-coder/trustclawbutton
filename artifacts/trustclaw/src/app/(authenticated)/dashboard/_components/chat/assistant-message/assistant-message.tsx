@@ -9,7 +9,7 @@ import type { ChatStatus, DynamicToolUIPart, ToolUIPart } from "ai";
 import { isToolUIPart } from "ai";
 import { ThinkingIndicator } from "./thinking-indicator";
 import { ToolCallSegment } from "./tool-call-segment";
-import { stripToolResultEchoes } from "~/server/api/routers/trustclaw/agent/strip-tool-echoes";
+import { stripToolResultEchoes } from "~/lib/strip-tool-echoes";
 import { PROSE_CLASSES } from "./prose-classes";
 
 type TextUIPart = { type: "text"; text: string };
