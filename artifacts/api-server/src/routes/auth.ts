@@ -5,7 +5,7 @@ const router = Router();
 
 router.all("/auth/*path", async (req: Request, res: Response) => {
   try {
-    const url = new URL(req.url, `http://localhost`);
+    const url = new URL(req.originalUrl, `http://localhost`);
     const headers = new Headers();
     for (const [key, value] of Object.entries(req.headers)) {
       if (typeof value === "string") {
